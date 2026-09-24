@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - {% if profile %}{{ profile.name }}{% else %}Portfolio{% endif %}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold">Get In Touch</h1>
+                <p class="lead">Let's discuss your next project or just say hello</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="row">
+                    <!-- Contact Form -->
+                    <div class="col-lg-8">
+                        <div class="contact-form-section">
+                            <h3 class="mb-4">Send me a message</h3>
+                            <form method="post" id="contactForm">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.name.id_for_label }}" class="form-label">Name *</label>
+                                        {{ form.name }}
+                                        {% if form.name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label">Email *</label>
+                                        {{ form.email }}
+                                        {% if form.email.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.email.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.subject.id_for_label }}" class="form-label">Subject *</label>
+                                    {{ form.subject }}
+                                    {% if form.subject.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.subject.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="{{ form.message.id_for_label }}" class="form-label">Message *</label>
+                                    {{ form.message }}
+                                    {% if form.message.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.message.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="col-lg-4">
+                        <div class="contact-info-section">
+                            <h3 class="mb-4">Contact Information</h3>
+                            
+                            <div class="contact-info-item mb-4">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5>Email</h5>
+                                    <p>{{ profile.email|default:"your.email@example.com" }}</p>
+                                </div>
+                            </div>
+                            
+                            {% if profile.phone %}
+                            <div class="contact-info-item mb-4">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5>Phone</h5>
+                                    <p>{{ profile.phone }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if profile.location %}
+                            <div class="contact-info-item mb-4">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5>Location</h5>
+                                    <p>{{ profile.location }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="social-links-section">
+                                <h5 class="mb-3">Follow Me</h5>
+                                <div class="social-links">
+                                    {% if profile.github %}
+                                        <a href="{{ profile.github }}" target="_blank" class="social-link me-3">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if profile.linkedin %}
+                                        <a href="{{ profile.linkedin }}" target="_blank" class="social-link me-3">
+                                            <i class="fab fa-linkedin"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if profile.twitter %}
+                                        <a href="{{ profile.twitter }}" target="_blank" class="social-link me-3">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Info Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="mb-4">Let's Work Together</h3>
+                <p class="lead mb-4">
+                    I'm always interested in hearing about new opportunities and exciting projects. 
+                    Whether you have a question about my work, want to collaborate, or just want to say hi, 
+                    I'd love to hear from you!
+                </p>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="info-card">
+                            <i class="fas fa-rocket fa-2x text-primary mb-3"></i>
+                            <h5>Quick Response</h5>
+                            <p>I typically respond to messages within 24 hours.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="info-card">
+                            <i class="fas fa-handshake fa-2x text-primary mb-3"></i>
+                            <h5>Collaboration</h5>
+                            <p>Open to discussing freelance and full-time opportunities.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="info-card">
+                            <i class="fas fa-lightbulb fa-2x text-primary mb-3"></i>
+                            <h5>Innovation</h5>
+                            <p>Always excited to work on innovative and challenging projects.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+        submitBtn.disabled = true;
+        
+        fetch('{% url "portfolio:api_contact" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                showAlert('success', data.message);
+                form.reset();
+            } else {
+                // Show error messages
+                showAlert('danger', 'Please fix the errors below.');
+                if (data.errors) {
+                    Object.keys(data.errors).forEach(field => {
+                        const fieldElement = form.querySelector(`[name="${field}"]`);
+                        if (fieldElement) {
+                            fieldElement.classList.add('is-invalid');
+                            const errorDiv = fieldElement.parentNode.querySelector('.invalid-feedback');
+                            if (errorDiv) {
+                                errorDiv.textContent = data.errors[field][0];
+                            }
+                        }
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            showAlert('danger', 'An error occurred. Please try again.');
+        })
+        .finally(() => {
+            // Reset button state
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+    
+    function showAlert(type, message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        const container = document.querySelector('.container');
+        container.insertBefore(alertDiv, container.firstChild);
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+    
+    // Remove validation classes on input
+    form.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('input', function() {
+            this.classList.remove('is-invalid');
+        });
+    });
+});
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} - {% if profile %}{{ profile.name }}{% else %}Portfolio{% endif %}{% endblock %}
+
+{% block content %}
+<!-- Project Header -->
+<section class="project-header py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'portfolio:home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'portfolio:projects' %}">Projects</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ project.title }}</li>
+                    </ol>
+                </nav>
+                
+                <div class="project-header-content">
+                    <h1 class="display-5 fw-bold mb-3">{{ project.title }}</h1>
+                    <p class="lead mb-4">{{ project.short_description }}</p>
+                    
+                    <div class="project-meta mb-4">
+                        <span class="badge bg-primary me-2">
+                            <i class="fas fa-calendar me-1"></i>
+                            {{ project.created_at|date:"M Y" }}
+                        </span>
+                        {% if project.featured %}
+                            <span class="badge bg-warning">
+                                <i class="fas fa-star me-1"></i>
+                                Featured
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="project-actions">
+                        {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-dark me-3">
+                                <i class="fab fa-github me-2"></i>View Code
+                            </a>
+                        {% endif %}
+                        {% if project.live_url %}
+                            <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>Live Demo
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Project Image -->
+                {% if project.image %}
+                <div class="project-image-section mb-5">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid rounded shadow">
+                </div>
+                {% endif %}
+                
+                <!-- Project Description -->
+                <div class="project-description mb-5">
+                    <h3>Project Overview</h3>
+                    <div class="content">
+                        {{ project.description|linebreaks }}
+                    </div>
+                </div>
+                
+                <!-- Technologies Used -->
+                <div class="project-technologies mb-5">
+                    <h3>Technologies Used</h3>
+                    <div class="tech-tags">
+                        {% for tech in project.get_technologies_list %}
+                            <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Project Info Sidebar -->
+                <div class="project-sidebar">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Project Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="project-detail-item">
+                                <strong>Project Type:</strong>
+                                <span>Web Application</span>
+                            </div>
+                            
+                            <div class="project-detail-item">
+                                <strong>Duration:</strong>
+                                <span>{{ project.created_at|date:"M Y" }} - {{ project.updated_at|date:"M Y" }}</span>
+                            </div>
+                            
+                            <div class="project-detail-item">
+                                <strong>Status:</strong>
+                                <span class="badge bg-success">Completed</span>
+                            </div>
+                            
+                            {% if project.featured %}
+                            <div class="project-detail-item">
+                                <strong>Featured:</strong>
+                                <span class="badge bg-warning">Yes</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Project Links -->
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Project Links</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-dark w-100 mb-2">
+                                <i class="fab fa-github me-2"></i>View Source Code
+                            </a>
+                            {% endif %}
+                            
+                            {% if project.live_url %}
+                            <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary w-100 mb-2">
+                                <i class="fas fa-external-link-alt me-2"></i>Live Demo
+                            </a>
+                            {% endif %}
+                            
+                            <a href="{% url 'portfolio:contact' %}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-envelope me-2"></i>Discuss Project
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Projects -->
+{% if related_projects %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Related Projects</h2>
+                <p class="lead mb-5">Check out some of my other work</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for related_project in related_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="project-card">
+                    {% if related_project.image %}
+                        <img src="{{ related_project.image.url }}" alt="{{ related_project.title }}" class="project-image">
+                    {% endif %}
+                    <div class="project-content">
+                        <h5 class="project-title">{{ related_project.title }}</h5>
+                        <p class="project-description">{{ related_project.short_description }}</p>
+                        <div class="project-links">
+                            {% if related_project.github_url %}
+                                <a href="{{ related_project.github_url }}" target="_blank" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            {% endif %}
+                            {% if related_project.live_url %}
+                                <a href="{{ related_project.live_url }}" target="_blank" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'portfolio:project_detail' related_project.id %}" class="project-link">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:projects' %}" class="btn btn-primary">View All Projects</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title text-white">Interested in Working Together?</h2>
+                <p class="lead mb-4">Let's discuss how I can help bring your project ideas to life.</p>
+                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg">Get In Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+

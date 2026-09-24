@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - {% if profile %}{{ profile.name }}{% else %}Portfolio{% endif %}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <p class="section-label">About</p>
+                <h1 class="gradient-text">About Me</h1>
+                <p class="lead">Get to know more about my background and expertise</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-5">
+                <div class="about-image text-center">
+                    {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="img-fluid rounded-circle mb-4" style="max-width: 300px;">
+                    {% else %}
+                        <div class="profile-placeholder-large mb-4">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    {% endif %}
+                    
+                    {% if profile.resume %}
+                        <a href="{{ profile.resume.url }}" class="btn btn-primary" download>
+                            <i class="fas fa-download me-2"></i>Download Resume
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="about-content">
+                    <h2 class="h3 mb-4">{{ profile.title|default:"Full Stack Developer" }}</h2>
+                    <div class="bio-content mb-4">
+                        {{ profile.bio|linebreaks }}
+                    </div>
+                    
+                    <div class="contact-info mb-4">
+                        <h4>Contact Information</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><i class="fas fa-envelope me-2"></i>{{ profile.email|default:"your.email@example.com" }}</p>
+                                {% if profile.phone %}
+                                    <p><i class="fas fa-phone me-2"></i>{{ profile.phone }}</p>
+                                {% endif %}
+                                {% if profile.location %}
+                                    <p><i class="fas fa-map-marker-alt me-2"></i>{{ profile.location }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="social-links">
+                                    <h5>Connect with me</h5>
+                                    {% if profile.github %}
+                                        <a href="{{ profile.github }}" target="_blank" class="social-link me-3">
+                                            <i class="fab fa-github"></i> GitHub
+                                        </a>
+                                    {% endif %}
+                                    {% if profile.linkedin %}
+                                        <a href="{{ profile.linkedin }}" target="_blank" class="social-link me-3">
+                                            <i class="fab fa-linkedin"></i> LinkedIn
+                                        </a>
+                                    {% endif %}
+                                    {% if profile.twitter %}
+                                        <a href="{{ profile.twitter }}" target="_blank" class="social-link me-3">
+                                            <i class="fab fa-twitter"></i> Twitter
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <p class="lead mb-5">Technologies and tools I work with</p>
+            </div>
+        </div>
+        
+        <!-- Skills by Category -->
+        {% regroup skills by category as skill_categories %}
+        {% for category in skill_categories %}
+        <div class="skill-category mb-5">
+            <h4 class="category-title">{{ category.grouper|title }}</h4>
+            <div class="row">
+                {% for skill in category.list %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="skill-card-detailed">
+                        <div class="skill-header">
+                            {% if skill.icon %}
+                                <i class="{{ skill.icon }} skill-icon"></i>
+                            {% endif %}
+                            <h5 class="skill-name">{{ skill.name }}</h5>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ skill.proficiency }}%"></div>
+                            </div>
+                            <span class="skill-percentage">{{ skill.proficiency }}%</span>
+                        </div>
+                        {% if skill.description %}
+                            <p class="skill-description">{{ skill.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Professional Experience</h2>
+                <p class="lead mb-5">My career journey</p>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            {% for experience in experiences %}
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h5 class="timeline-title">{{ experience.title }}</h5>
+                        <h6 class="timeline-company">{{ experience.company }}</h6>
+                        <span class="timeline-date">
+                            {{ experience.start_date|date:"M Y" }} - 
+                            {% if experience.current %}Present{% else %}{{ experience.end_date|date:"M Y" }}{% endif %}
+                            {% if experience.location %} | {{ experience.location }}{% endif %}
+                        </span>
+                    </div>
+                    <div class="timeline-description">
+                        {{ experience.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title text-white">Ready to Work Together?</h2>
+                <p class="lead mb-4">Let's discuss your next project and how I can help bring your vision to life.</p>
+                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg me-3">Get In Touch</a>
+                <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-light btn-lg">View My Work</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+

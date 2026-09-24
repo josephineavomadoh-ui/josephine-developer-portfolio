@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if profile %}{{ profile.name }} - Portfolio{% else %}Portfolio{% endif %}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section d-flex align-items-center min-vh-100">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        Hi, I'm <span class="text-primary">{{ profile.name|default:"Your Name" }}</span>
+                    </h1>
+                    <h2 class="h3 text-light mb-4">{{ profile.title|default:"Full Stack Developer" }}</h2>
+                    <p class="lead text-light mb-4">{{ profile.bio|default:"I'm a passionate developer who loves creating amazing web experiences." }}</p>
+                    
+                    <div class="hero-buttons">
+                        <!-- <a href="{% url 'portfolio:projects' %}" class="btn btn-primary btn-lg me-3">
+                            View My Work
+                        </a> -->
+                        <a href="{% url 'portfolio:contact' %}" class="btn btn-outline-light btn-lg">
+                            Get In Touch
+                        </a>
+                        <a href="{% static 'Josephine Resume.pdf' %}" download class="btn btn-outline-light btn-lg" >
+                            Download My Resume
+                        </a>
+
+                        
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image text-center">
+                    {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="img-fluid rounded-circle profile-img">
+                    {% else %}
+                        <div class="profile-placeholder">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+        <a href="#about-section" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+</section>
+
+<!-- About Preview Section -->
+<section id="about-section" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">About Me</h2>
+                <p class="lead">{{ profile.bio|default:"I'm a passionate developer with a love for creating innovative solutions." }}</p>
+                <a href="{% url 'portfolio:about' %}" class="btn btn-outline-primary">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Skills & Technologies</h2>
+                <p class="lead mb-5">Technologies I work with</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for skill in skills %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="skill-card text-center">
+                    {% if skill.icon %}
+                        <i class="{{ skill.icon }} skill-icon"></i>
+                    {% endif %}
+                    <h5 class="skill-name">{{ skill.name }}</h5>
+                    <div class="skill-progress">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{ skill.proficiency }}%;" aria-valuenow="{{ skill.proficiency }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">{{ skill.proficiency }}%</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Featured Work</h2>
+                <p class="lead mb-5">A few selected projects from my portfolio</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="project-card featured-project-card">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                    {% endif %}
+                    <div class="project-content">
+                        <h5 class="project-title">{{ project.title }}</h5>
+                        <p class="project-description">{{ project.short_description }}</p>
+                        <div class="project-technologies">
+                            {% for tech in project.get_technologies_list %}
+                                <span class="tech-tag">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="project-links">
+                            {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            {% endif %}
+                            {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'portfolio:project_detail' project.id %}" class="project-link">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:projects' %}" class="btn btn-primary">All Projects</a>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Preview Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Experience</h2>
+                <p class="lead mb-5">My professional journey</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for experience in experiences %}
+            <div class="col-lg-6 mb-4">
+                <div class="experience-card">
+                    <div class="experience-header">
+                        <h5 class="experience-title">{{ experience.title }}</h5>
+                        <h6 class="experience-company">{{ experience.company }}</h6>
+                        <span class="experience-date">
+                            {{ experience.start_date|date:"M Y" }} - 
+                            {% if experience.current %}Present{% else %}{{ experience.end_date|date:"M Y" }}{% endif %}
+                        </span>
+                    </div>
+                    <p class="experience-description">{{ experience.description|truncatewords:20 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:about' %}" class="btn btn-outline-primary">View Full Experience</a>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title text-white">Let's Work Together</h2>
+                <p class="lead mb-4">Have a project in mind? Let's discuss how we can bring your ideas to life.</p>
+                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg">Get In Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
