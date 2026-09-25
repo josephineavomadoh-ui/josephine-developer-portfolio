@@ -125,26 +125,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-WHITENOISE_SKIP_COMPRESS_EXTENSIONS = (
-    'jpg',
-    'jpeg',
-    'png',
-    'gif',
-    'webp',
-    'zip',
-    'gz',
-    'tgz',
-    'bz2',
-    'tbz',
-    'xz',
-    'br',
-    'swf',
-    'flv',
-    'woff',
-    'woff2',
-    'pdf',
-)
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
