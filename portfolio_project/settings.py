@@ -7,6 +7,11 @@ from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
 
+
+# ============================================================
+# CLOUDINARY IMPORTS
+# ============================================================
+
 try:
     import cloudinary
     import cloudinary.api
@@ -14,6 +19,7 @@ try:
     import cloudinary_storage
 
     CLOUDINARY_AVAILABLE = True
+
 except ImportError:  # pragma: no cover
     cloudinary = None
     cloudinary_storage = None
@@ -115,7 +121,6 @@ INSTALLED_APPS = [
     'portfolio',
 ]
 
-
 if CLOUDINARY_ENABLED:
     INSTALLED_APPS = [
         'cloudinary_storage',
@@ -131,7 +136,7 @@ if CLOUDINARY_ENABLED:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # WhiteNoise serves collected static files in production.
+    # WhiteNoise serves static CSS, JavaScript and static images.
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -240,7 +245,7 @@ STATICFILES_DIRS = [
 
 
 # ============================================================
-# MEDIA / CLOUDINARY STORAGE
+# MEDIA FILES
 # ============================================================
 
 MEDIA_URL = '/media/'
@@ -248,39 +253,35 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-if CLOUDINARY_ENABLED:
+# ============================================================
+# CLOUDINARY CONFIGURATION
+# ============================================================
 
+if CLOUDINARY_ENABLED:
     cloudinary.config(
         cloud_name=CLOUDINARY_CLOUD_NAME,
         api_key=CLOUDINARY_API_KEY,
         api_secret=CLOUDINARY_API_SECRET,
     )
 
-    STORAGES = {
-        'default': {
-            'BACKEND':
-                'cloudinary_storage.storage.MediaCloudinaryStorage',
-        },
 
-        'staticfiles': {
-            'BACKEND':
-                'whitenoise.storage.CompressedStaticFilesStorage',
-        },
-    }
+# ============================================================
+# STORAGE
+# ============================================================
 
-else:
+STORAGES = {
+    'default': {
+        'BACKEND': (
+            'cloudinary_storage.storage.MediaCloudinaryStorage'
+            if CLOUDINARY_ENABLED
+            else 'django.core.files.storage.FileSystemStorage'
+        ),
+    },
 
-    STORAGES = {
-        'default': {
-            'BACKEND':
-                'django.core.files.storage.FileSystemStorage',
-        },
-
-        'staticfiles': {
-            'BACKEND':
-                'whitenoise.storage.CompressedStaticFilesStorage',
-        },
-    }
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
 
 
 # ============================================================

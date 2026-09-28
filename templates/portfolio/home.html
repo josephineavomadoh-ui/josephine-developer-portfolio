@@ -23,9 +23,11 @@
                         <a href="{% url 'portfolio:contact' %}" class="btn btn-outline-light btn-lg">
                             Get In Touch
                         </a>
-                        <a href="{% static 'Josephine_Resume.pdf' %}" download class="btn btn-outline-light btn-lg" >
-                            Download My Resume
-                        </a>
+                       {% if profile.resume %}
+                    <a href="{{ profile.resume.url }}" download class="btn btn-outline-light btn-lg">
+                        Download Resume
+                    </a>
+                        {% endif %}
 
                         
 
