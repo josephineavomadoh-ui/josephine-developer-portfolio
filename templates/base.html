@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}{% if profile %}{{ profile.name }} — Portfolio{% else %}Portfolio{% endif %}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% if profile %}{{ profile.name }} — {{ profile.title }}. Explore my projects, skills, and professional experience.{% else %}Professional portfolio showcasing projects and expertise.{% endif %}{% endblock %}" />
+    <link rel="icon" href="{% static 'img/ja-luxury-letter-logo-vector-55096772 (1).jpg' %}">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
