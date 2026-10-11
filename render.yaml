@@ -4,7 +4,7 @@ services:
     runtime: python
     region: oregon
     plan: free
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py collectstatic --clear --noinput"
     startCommand: "gunicorn portfolio_project.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
